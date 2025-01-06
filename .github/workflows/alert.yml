@@ -1,0 +1,25 @@
+name: Send POST Request
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  send-post-request:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Make POST Request
+        run: |
+          curl -X POST \
+               -H "Content-Type: application/json" \
+               -d '{"message": "Workflow triggered"}' \
+               https://eoxlbspc0fsth7i.m.pipedream.net
+        
+      # Optional: Add error handling
+      - name: Check for errors
+        if: ${{ failure() }}
+        run: |
+          echo "The POST request failed"
+          exit 1
