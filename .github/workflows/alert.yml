@@ -15,7 +15,7 @@ jobs:
           curl -X POST \
                -H "Content-Type: application/json" \
                -d '{"message": "Workflow triggered"}' \
-               https://eoxlbspc0fsth7i.m.pipedream.net
+               https://31cc-136-25-200-57.ngrok-free.app
         
       # Optional: Add error handling
       - name: Check for errors
