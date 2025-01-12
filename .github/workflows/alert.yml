@@ -4,6 +4,11 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name to send'
+        required: false
+        default: 'main'
 
 jobs:
   send-post-request:
@@ -12,11 +17,16 @@ jobs:
     steps:
       - name: Make POST Request
         run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ github.event.inputs.branch }}" ]; then
+            BRANCH_NAME="${{ github.event.inputs.branch }}"
+          fi
           curl -X POST \
-               -H "Content-Type: application/json" \
-               -d '{"message": "Workflow triggered"}' \
-               https://e5f8-136-25-200-57.ngrok-free.app 
-        
+              -H "Content-Type: application/json" \
+              -d "{\"message\": \"Workflow triggered\", \"branch\": \"${BRANCH_NAME}\"}" \
+              https://evolving-enabled-panther.ngrok-free.app
+ 
+      
       # Optional: Add error handling
       - name: Check for errors
         if: ${{ failure() }}
